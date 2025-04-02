@@ -1,0 +1,73 @@
+/* style.css - Updated for Secure Flame Game */
+
+/* Reset default margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  background-color: #000; /* Dark background for cinematic effect */
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+}
+
+/* Game container styling */
+#game-container {
+  width: 800px;
+  height: 600px;
+  margin: 0 auto;
+  position: relative;
+  border: 2px solid #fff; /* Optional: For debugging container bounds */
+  background-color: #000;
+}
+
+/* Fade transition effect for UI elements (e.g., dialogue box) */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Optional styling for NPC dialogue text or alerts */
+/* .npc-dialogue {
+  font-style: italic;
+  color: #00FFFF;
+} */
+
+/* Optional: Add style for Save Button */
+.save-button {
+  background-color: #444;
+  color: #FFD700;
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* Optional: Mouse hover effects (used by Phaser sprites via pointerover/pointerout events) */
+/* .hover-effect {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+} */
+
+
+
+
+
+  
+
