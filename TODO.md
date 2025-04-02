@@ -9,5 +9,7 @@
 [X] - Add `/style` folder
 
 ## Features
-[ ] - Add home screen
-[ ] - Add animated text
+[X] - Add home screen
+[X] - Add animated text
+[ ] - Add Uniform class for Scenes
+[ ] - Add Uniform class for Levels
