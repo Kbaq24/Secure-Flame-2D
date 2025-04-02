@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure Flame Game</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico"> <!-- ✅ Favicon added -->
+</head>
+<body>
+  <div id="game-container"></div>
+  <noscript>Please enable JavaScript to play this game.</noscript>
+
+  <!-- Load Phaser library -->
+  <script src="phaser.min.js"></script>
+
+  <!-- Load helper scripts -->
+  <script src="graphql.js"></script>
+  <script src="SaveLoadHelper.js"></script>
+
+  <!-- Load Game Scenes and Related Files -->
+  <script src="Startscreen.js"></script>
+  <script src="OfficeScene.js"></script>
+  <script src="LevelIntro.js"></script>
+  <script src="main.js"></script>
+  <script src="Level1.js"></script>
+  <script src="Level2.js"></script>
+  <script src="Level3.js"></script>
+  <script src="Level4.js"></script>
+  <script src="Level5.js"></script>
+  <script src="BonusLevel.js"></script>
+  <script src="CongratulationsScene.js"></script>
+  <script src="ComputerScene.js"></script>
+  <script src="CISOScene.js"></script>
+
+  <!-- Optional: Utility scripts for future expansion -->
+  <!-- <script src="NPCDialogueSystem.js"></script> -->
+  <!-- <script src="InventorySystem.js"></script> -->
+
+  <!-- Initialize the Phaser game -->
+  <script>
+    const config = {
+      type: Phaser.AUTO,
+      width: 800,
+      height: 600,
+      parent: 'game-container',
+      scene: [
+        Startscreen,
+        OfficeScene,
+        LevelIntro,
+        main,
+        Level1,
+        Level2,
+        Level3,
+        Level4,
+        Level5,
+        BonusLevel,
+        CongratulationsScene,
+        ComputerScene,
+        CISOScene
+      ],
+      physics: {
+        default: 'arcade',
+        arcade: {
+          debug: false
+        }
+      },
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+      }
+    };
+
+    const game = new Phaser.Game(config);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
