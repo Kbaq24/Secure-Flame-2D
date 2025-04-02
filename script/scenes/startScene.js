@@ -15,7 +15,7 @@ window.StartScene = class Startscreen extends Phaser.Scene {
   currentlyTyping = false;
 
   // TODO: Make toggleable, or set to false for production
-  fastText = true;
+  fastText = false;
   preload() {
     this.load.audio('Background_music', 'assets/audio/music/Background_music.wav');
     this.load.audio('Click', 'assets/audio/sound_effects/Click.mp3');
