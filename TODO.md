@@ -2,10 +2,12 @@
 
 ## Refactoring
 
-[ ] - Add `/assets` folder
-[ ] - Add `/assets/images` folder
-[ ] - Add `/assets/audio` folder
-[ ] - Add `/script` folder
-[ ] - Add `/style` folder
+[X] - Add `/assets` folder
+[X] - Add `/assets/images` folder
+[X] - Add `/assets/audio` folder
+[X] - Add `/script` folder
+[X] - Add `/style` folder
 
 ## Features
+[ ] - Add home screen
+[ ] - Add animated text
