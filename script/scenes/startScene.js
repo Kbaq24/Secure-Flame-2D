@@ -3,6 +3,19 @@ window.StartScene = class Startscreen extends Phaser.Scene {
     super({ key: 'StartScene' });
   }
 
+  currentMessage = 0;
+  messages = [
+    "Welcome to Secure Flame!",
+    "In this game you will be working for a company as a cybersecurity analyst.",
+    "Help your company make the best actions to protect your data.",
+    "In this office, you'll face relentless cyberattacks by BAMF.",
+    "Prepare to defend the network with quick thinking and decisive action.",
+    "Your journey begins now..."
+  ]
+  currentlyTyping = false;
+
+  // TODO: Make toggleable, or set to false for production
+  fastText = true;
   preload() {
     this.load.audio('Background_music', 'assets/audio/music/Background_music.wav');
     this.load.audio('Click', 'assets/audio/sound_effects/Click.mp3');
@@ -39,7 +52,7 @@ window.StartScene = class Startscreen extends Phaser.Scene {
     const background = this.add.sprite(centerX,centerY,"Office_Design_3").setOrigin(0.5)
       
     background.play("Office_Design_3_anim");
-    this.bgMusic = this.sound.add('Background_music', { loop: true, volume: 0.5 });
+    this.bgMusic = this.sound.add('Background_music', { loop: true, volume: 0.05 });
     this.bgMusic.play();
 
     //this.player = this.physics.add.sprite(100, 100, 'player');
@@ -48,20 +61,20 @@ window.StartScene = class Startscreen extends Phaser.Scene {
     //this.workstation = this.physics.add.staticImage(400, 300, null);
     //this.workstation.setSize(64, 64).setVisible(false);
 
-    this.cursors = this.input.keyboard.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.W,
-      down: Phaser.Input.Keyboard.KeyCodes.S,
-      left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D
-    });
-
-    this.physics.add.overlap(this.player, this.workstation, this.handleWorkstationInteraction, null, this);
+    // this.cursors = this.input.keyboard.addKeys({
+    //   up: Phaser.Input.Keyboard.KeyCodes.W,
+    //   down: Phaser.Input.Keyboard.KeyCodes.S,
+    //   left: Phaser.Input.Keyboard.KeyCodes.A,
+    //   right: Phaser.Input.Keyboard.KeyCodes.D
+    // });
 
     this.createDialogueUI();
 
-    const introText = "Secure Flame Game\n\nPress 'Continue' to begin.";
-    this.showDialogue(introText, () => {
-      this.showStartOptions();
+    this.physics.add.overlap(this.player, this.workstation, this.handleWorkstationInteraction, null, this);
+
+
+    this.showDialogue(this.messages, () => {
+      this.scene.start('Level1');
     });
 
     //this.anims.create({
@@ -90,13 +103,13 @@ window.StartScene = class Startscreen extends Phaser.Scene {
       //this.player.anims.stop();
     //}
 
-    if (this.dialogueContainer.visible) {
-      if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP))) {
-        this.scrollDialogue(-20);
-      } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN))) {
-        this.scrollDialogue(20);
-      }
-    }
+    // if (this.dialogueContainer.visible) {
+    //   if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP))) {
+    //     this.scrollDialogue(-20);
+    //   } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN))) {
+    //     this.scrollDialogue(20);
+    //   }
+    // }
   }
 
   handleWorkstationInteraction(player, workstation) {
@@ -120,29 +133,52 @@ window.StartScene = class Startscreen extends Phaser.Scene {
     this.dialogueBackground.displayWidth = boxWidth;
     this.dialogueBackground.displayHeight = boxHeight;
 
-    this.dialogueContainer = this.add.container(boxX, boxY, [this.dialogueBackground]);
+    let btnX = this.dialogueBackground.displayWidth - 80;
+    let btnY = this.dialogueBackground.displayHeight - 30;
+    let padding = 20; 
 
-    let maskShape = this.make.graphics();
-    maskShape.fillRect(0, 0, boxWidth, boxHeight);
-    let mask = maskShape.createGeometryMask();
+    let btnText = this.add.text(btnX, btnY, 'Continue', {
+        font: '18px Arial',
+        fill: '#00FF00'
+    }).setOrigin(0.5);
+    
+    this.continueBtn = this.add.image(btnX, btnY, 'Button')
+        .setOrigin(0.5)
+        .setDisplaySize(btnText.width + padding, btnText.height + padding);
+    btnText.setDepth(1)
+
+    this.continueBtn.on('pointerover', () => {
+      this.continueBtn.setTint(0x00FF00);
+    });
+    this.continueBtn.on('pointerout', () => { 
+      this.continueBtn.clearTint();
+    })
+
+    this.dialogueContainer = this.add.container(boxX, boxY, [this.dialogueBackground, this.continueBtn, btnText]);
+
+    // let maskShape = this.make.graphics();
+    // maskShape.fillRect(0, 0, boxWidth, boxHeight);
+    // let mask = maskShape.createGeometryMask();
 
     this.dialogueText = this.add.text(10, 10, '', {
       font: '20px Arial',
-      fill: '#FFFFFF',
-      wordWrap: { width: boxWidth - 20 }
+      fill: '#000000',
+      wordWrap: { width: boxWidth - 175, useAdvancedWrap: true},
+      padding: {x:80, y:15}
     });
-    this.dialogueText.setMask(mask);
+
     this.dialogueContainer.add(this.dialogueText);
 
     this.dialogueScrollOffset = 0;
 
-    this.scrollbar = this.add.image(boxWidth - 20, 10, 'Scrollbar').setScale(0.5);
-    this.dialogueContainer.add(this.scrollbar);
-
-    this.dialogueContainer.setVisible(false);
-    this.dialogueContainer.alpha = 0; // Initially hidden
+    // this.scrollbar = this.add.image(boxWidth - 20, 10, 'Scrollbar').setScale(0.5);
+    // this.dialogueContainer.add(this.scrollbar);
   }
 
+  /**
+   * 
+   * @deprecated 
+   */
   scrollDialogue(delta) {
     let textHeight = this.dialogueText.height;
     let boxHeight = this.dialogueBackground.displayHeight;
@@ -154,12 +190,28 @@ window.StartScene = class Startscreen extends Phaser.Scene {
     this.dialogueText.y = 10 - this.dialogueScrollOffset;
   }
 
-  showDialogue(text, callback) {
-    this.dialogueText.setText(text);
-    this.dialogueScrollOffset = 0;
-    this.dialogueText.y = 10;
+  showDialogue(array, callback, index=0) {
+    this.currentlyTyping = true;
+    this.dialogueText.setText(''); 
+    if(this.fastText){
+      this.currentlyTyping = false;
+      this.dialogueText.setText(array[index]);
+    }else {
+      const text = array[index];
+      const characters = text.split(/(?<=\n)|/);
+      characters.forEach((char, index) => {
+        this.time.delayedCall(index * 50, () => {
+          let currentText = this.dialogueText.text;
+          this.dialogueText.setText(currentText + char);
+          if(index === characters.length -1) this.currentlyTyping = false;
+        });
+      })
+    }
+  
+    this.continueBtn.setInteractive();
 
     this.dialogueContainer.setVisible(true);
+
     this.tweens.add({
       targets: this.dialogueContainer,
       alpha: 1,
@@ -167,33 +219,41 @@ window.StartScene = class Startscreen extends Phaser.Scene {
       ease: 'Power2'
     });
 
-    let btnX = this.dialogueBackground.displayWidth - 80;
-    let btnY = this.dialogueBackground.displayHeight - 30;
-    let continueBtn = this.add.image(btnX, btnY, 'Button').setInteractive();
-    continueBtn.setOrigin(0.5);
-    let btnText = this.add.text(btnX, btnY, 'Continue', {
-      font: '18px Arial',
-      fill: '#00FF00'
-    });
-    btnText.setOrigin(0.5);
+    const onContinueClick = () => {
+      if (this.currentlyTyping) return;
+      this.sound.play('Click');
+      let newIndex = index + 1;
+      if (newIndex >= this.messages.length) {
+          callback();
+          this.dialogueText.setText('');
+      } else {
+          this.continueBtn.setInteractive(false); // Disable button while text is showing
+          console.log(index);
+          console.log(newIndex);  
+          this.showDialogue(this.messages, callback, newIndex);
+      }
 
-    let buttonContainer = this.add.container(0, 0, [continueBtn, btnText]);
-    buttonContainer.setPosition(btnX, btnY);
-    this.dialogueContainer.add(buttonContainer);
+      // Remove the event listener after the button is pressed
+      this.continueBtn.off('pointerdown', onContinueClick);
+    };
+    this.continueBtn.on('pointerdown', onContinueClick);
+    // let buttonContainer = this.add.container(0, 0, [continueBtn, btnText]);
+    // buttonContainer.setPosition(btnX, btnY);
+    // this.dialogueContainer.add(buttonContainer);
 
-    continueBtn.on('pointerdown', () => {
-      this.tweens.add({
-        targets: this.dialogueContainer,
-        alpha: 0,
-        duration: 300,
-        ease: 'Power2',
-        onComplete: () => {
-          this.dialogueContainer.setVisible(false);
-          buttonContainer.destroy();
-          if (callback) callback();
-        }
-      });
-    });
+    // continueBtn.on('pointerdown', () => {
+    //   this.tweens.add({
+    //     targets: this.dialogueContainer,
+    //     alpha: 0,
+    //     duration: 300,
+    //     ease: 'Power2',
+    //     onComplete: () => {
+    //       this.dialogueContainer.setVisible(false);
+    //       buttonContainer.destroy();
+    //       if (callback) callback();
+    //     }
+    //   });
+    // });
   }
 
   showStartOptions() {
