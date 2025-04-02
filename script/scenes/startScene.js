@@ -1,6 +1,6 @@
-window.Startscreen = class Startscreen extends Phaser.Scene {
+window.StartScene = class Startscreen extends Phaser.Scene {
   constructor() {
-    super({ key: 'Startscreen' });
+    super({ key: 'StartScene' });
   }
 
   preload() {
