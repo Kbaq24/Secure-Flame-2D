@@ -4,15 +4,19 @@ window.Startscreen = class Startscreen extends Phaser.Scene {
   }
 
   preload() {
-    this.load.audio('Background_music', 'Assets/Background_music.wav');
-    this.load.audio('Click', 'Assets/Click.mp3');
+    this.load.audio('Background_music', 'assets/audio/music/Background_music.wav');
+    this.load.audio('Click', 'assets/audio/sound_effects/Click.mp3');
 
-    this.load.image('Dialogue_Box', 'Assets/Dialogue_Box.png');
-    this.load.image('Button', 'Assets/Button.png');
-    this.load.image('Scrollbar', 'Assets/Scrollbar.png');
-    this.load.spritesheet('Office_Design_3', 'Assets/Office_Design_Sprites/Office_Design_3.png');
-
-    this.load.image('player', 'Assets/player.png', { frameWidth: 32, frameHeight: 32 });
+    this.load.image('Dialogue_Box', 'assets/images/Dialogue_Box.png');
+    this.load.image('Button', 'assets/images/Button.png');
+    this.load.image('Scrollbar', 'assets/images/Scrollbar.png');
+    this.load.spritesheet('Office_Design_3', 'assets/images/Office_Design_3.png',
+      {
+        frameWidth:512,
+        frameHeight:544,
+        endFrame:6
+      }
+    );
   }
 
   create() {
