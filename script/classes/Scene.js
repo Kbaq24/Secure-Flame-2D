@@ -52,63 +52,12 @@ class Scene extends Phaser.Scene {
       this.bgMusic = this.sound.add('Background_music', { loop: true, volume: 0.05 });
       this.bgMusic.play();
   
-      //this.player = this.physics.add.sprite(100, 100, 'player');
-      //this.player.setCollideWorldBounds(true);
-  
-      //this.workstation = this.physics.add.staticImage(400, 300, null);
-      //this.workstation.setSize(64, 64).setVisible(false);
-  
-      // this.cursors = this.input.keyboard.addKeys({
-      //   up: Phaser.Input.Keyboard.KeyCodes.W,
-      //   down: Phaser.Input.Keyboard.KeyCodes.S,
-      //   left: Phaser.Input.Keyboard.KeyCodes.A,
-      //   right: Phaser.Input.Keyboard.KeyCodes.D
-      // });
-  
       this.createDialogueUI();
   
       this.physics.add.overlap(this.player, this.workstation, this.handleWorkstationInteraction, null, this);
-  
-  
-      this.showDialogue(this.messages, () => {
-        this.scene.start('Level1');
-      });
-  
-      //this.anims.create({
-        //key: 'run',
-        //frameRate: 10,
-        //repeat: -1
-      //});
     }
   
-    update() {
-      //const speed = 150;
-      //const { up, down, left, right } = this.cursors;
-      //const body = this.player.body;
-  
-      //body.setVelocity(0);
-  
-      //if (up.isDown) body.setVelocityY(-speed);
-      //else if (down.isDown) body.setVelocityY(speed);
-  
-      //if (left.isDown) body.setVelocityX(-speed);
-      //else if (right.isDown) body.setVelocityX(speed);
-  
-      //if (body.velocity.x !== 0 || body.velocity.y !== 0) {
-        //this.player.anims.play('run', true);
-      //} else {
-        //this.player.anims.stop();
-      //}
-  
-      // if (this.dialogueContainer.visible) {
-      //   if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP))) {
-      //     this.scrollDialogue(-20);
-      //   } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN))) {
-      //     this.scrollDialogue(20);
-      //   }
-      // }
-    }
-  
+    /**@deprecated */
     handleWorkstationInteraction(player, workstation) {
       let saveData = window.loadGame?.();
       this.bgMusic.stop();
@@ -134,15 +83,15 @@ class Scene extends Phaser.Scene {
       let btnY = this.dialogueBackground.displayHeight - 30;
       let padding = 20; 
   
-      let btnText = this.add.text(btnX, btnY, 'Continue', {
+      this.btnText = this.add.text(btnX, btnY, 'Continue', {
           font: '18px Arial',
           fill: '#00FF00'
       }).setOrigin(0.5);
       
       this.continueBtn = this.add.image(btnX, btnY, 'Button')
           .setOrigin(0.5)
-          .setDisplaySize(btnText.width + padding, btnText.height + padding);
-      btnText.setDepth(1)
+          .setDisplaySize(this.btnText.width + padding, this.btnText.height + padding);
+      this.btnText.setDepth(1)
   
       this.continueBtn.on('pointerover', () => {
         this.continueBtn.setTint(0x00FF00);
@@ -151,7 +100,7 @@ class Scene extends Phaser.Scene {
         this.continueBtn.clearTint();
       })
   
-      this.dialogueContainer = this.add.container(boxX, boxY, [this.dialogueBackground, this.continueBtn, btnText]);
+      this.dialogueContainer = this.add.container(boxX, boxY, [this.dialogueBackground, this.continueBtn, this.btnText]);
   
       // let maskShape = this.make.graphics();
       // maskShape.fillRect(0, 0, boxWidth, boxHeight);

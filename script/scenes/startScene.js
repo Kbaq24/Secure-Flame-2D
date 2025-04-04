@@ -11,4 +11,10 @@ window.StartScene = class StartScene extends Scene {
       ]
     );
   }
+  create(){
+    super.create();
+    this.showDialogue(this.messages, () => {
+      this.scene.start('Level1');
+    });
+  }
 }
