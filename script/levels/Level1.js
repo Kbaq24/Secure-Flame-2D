@@ -54,11 +54,6 @@ window.Level1 = class Level1 extends Level {
     ];
     super(1, levels);
   }
-
-  create() {
-    super.create();
-    this.triggerBAMFAlert();
-  }
 };
 
 
