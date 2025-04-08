@@ -22,6 +22,11 @@ class Level extends Scene
 	{
 		return this.score / this.totalPoints * 100;
 	}
+
+	create(){
+		super.create();
+		this.triggerBAMFAlert();
+	}
 	preload()
 	{
 		super.preload();
@@ -120,6 +125,7 @@ class Level extends Scene
 		this.dialogueContainer.add(hintText);
 		hintText.on('pointerdown', () =>
 		{
+			// BUG: Hint button navigates to the next question after showing hint
 			this.showDialogue(this.storyParts, callback, this.storyParts[this.part].hint, this.part);
 			this.sound.play('Click');
 		});
