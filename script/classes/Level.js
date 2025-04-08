@@ -9,7 +9,7 @@ class Level extends Scene
 	{
 		super(
 		{
-			key: `level${level}`
+			key: `Level${level}`
 		});
 		this.storyParts = storyParts;
 		this.score = 0;
