@@ -1,16 +1,29 @@
-class Option {
-    constructor(text, correct, feedback) {
+class QuestionOption {
+    /**
+     * 
+     * @param {string} text 
+     * @param {number} score 
+     * @param {string} feedback 
+     */
+    constructor(text, score, feedback) {
       this.text = text;
-      this.correct = correct;
+      this.score = score;
       this.feedback = feedback;
     }
 }
 
 class Question {
-    constructor(storyText, options, hint,score=1) {
+    /**
+     * 
+     * @param {string} storyText 
+     * @param {QuestionOption[]} options 
+     * @param {string} hint 
+     * @param {number} [multiplier=1] 
+     */
+    constructor(storyText, options, hint,multiplier=1) {
         this.storyText = storyText;
         this.options = options;
         this.hint = hint;
-        this.score = score;
+        this.multiplier = multiplier;
     }
 }

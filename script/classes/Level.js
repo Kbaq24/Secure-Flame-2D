@@ -12,19 +12,15 @@ class Level extends Scene
 			key: `Level${level}`
 		});
 		this.storyParts = storyParts;
-		this.score = 0;
-		this.totalPoints = this.storyParts.reduce((acc, part) => acc + part.score, 0);
+		this.score = 75;
 		this.fastText = true;
 		this.part = 0;
         this.level = level;
 	}
-	get percentScore()
-	{
-		return this.score / this.totalPoints * 100;
-	}
 
 	create(){
 		super.create();
+		this.createScoreBar();
 		this.triggerBAMFAlert();
 	}
 	preload()
@@ -35,7 +31,55 @@ class Level extends Scene
 		this.load.audio('BAMF_Alert', 'assets/audio/sound_effects/BAMF_alert.wav');
 		this.load.audio('Level_Complete', 'assets/audio/sound_effects/Level_Complete.wav');
 	}
+	interpolateColor(num, low, medium, high) {
+		num = Phaser.Math.Clamp(num, 0, 100);
+	  
+		let startColor, endColor, t;
+	  
+		if (num <= 50) {
+		  startColor = Phaser.Display.Color.ValueToColor(low);
+		  endColor = Phaser.Display.Color.ValueToColor(medium);
+		  t = num / 50;
+		} else {
+		  startColor = Phaser.Display.Color.ValueToColor(medium);
+		  endColor = Phaser.Display.Color.ValueToColor(high);
+		  t = (num - 50) / 50;
+		}
+	  
+		const r = Phaser.Math.Interpolation.Linear([startColor.red, endColor.red], t);
+		const g = Phaser.Math.Interpolation.Linear([startColor.green, endColor.green], t);
+		const b = Phaser.Math.Interpolation.Linear([startColor.blue, endColor.blue], t);
+	  
+		return Phaser.Display.Color.GetColor(r, g, b);
+	  }
+	  
+	createScoreBar(){
+		const x = 450;
+		const y = 50;
+		const width = 300;
+		const height = 30;
+		// Background bar (e.g., grey)
+		this.scoreBarBg = this.add.rectangle(x, y, width, height, 0x555555)
+		.setOrigin(0, 0);
+  
+		// Fill bar (e.g., green, will be resized later)
+		this.scoreBarFill = this.add.rectangle(x, y, 0, height, 0x00ff00)
+			.setOrigin(0, 0);
 
+		this.scoreBarText = this.add.text(x + width / 2, y + height / 2, `${this.score}%`, {
+			font: '16px Arial',
+			fill: '#000000'
+		}).setOrigin(0.5, 0.5);
+		this.setScoreBar();
+	}
+	getScoreBarColor(){
+		return this.interpolateColor(this.score, 0xFF0000, 0xFFFF00, 0x00FF00);
+	}
+	setScoreBar(){
+		this.scoreBarFill.width = this.score / 100 * this.scoreBarBg.width;
+		this.scoreBarFill.setFillStyle(this.getScoreBarColor());
+		this.scoreBarText.setText(`${this.score}%`);
+	}
 	triggerBAMFAlert()
 	{
 		console.log("Triggering BAMF Alert");
@@ -99,7 +143,8 @@ class Level extends Scene
 			{
 				this.sound.play(option.correct ? 'Right' : 'Wrong');
 				this.showDialogue(this.storyParts, callback, option.feedback, this.part + 1)
-				if (option.correct) this.score += this.storyParts[this.part].score;
+				this.score += option.score * this.storyParts[this.part].multiplier;
+				this.setScoreBar();
 			});
 
 			// Add the option text and arrow to the container
@@ -199,7 +244,6 @@ class Level extends Scene
     onLevelComplete(){
         this.sound.play('Level_Complete');
         console.log("Level Complete")
-        console.log("Score: ", this.percentScore)
         this.scene.start('Level'+(this.level+1));
     }
 }
