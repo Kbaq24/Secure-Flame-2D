@@ -88,7 +88,9 @@ class Level extends Scene
 	triggerBAMFAlert()
 	{
 		console.log("Triggering BAMF Alert");
-		this.sound.play('BAMF_Alert');
+		if(this.level == 1){
+			this.sound.play('BAMF_Alert', {volume: 0.4 });
+		}
 		console.log(this.storyParts)
 		this.showDialogue(this.storyParts, () =>
 		{
@@ -146,7 +148,7 @@ class Level extends Scene
 			// Add interaction for the option text
 			optText.on('pointerdown', () =>
 			{
-				this.sound.play(option.correct ? 'Right' : 'Wrong');
+				this.sound.play(option.score > 0 ? 'Right' : 'Wrong', {volume: 0.4 });
 				
 				this.score += option.score * this.storyParts[this.part].multiplier;
 				if(this.score <= 0){
@@ -256,7 +258,7 @@ class Level extends Scene
 	}
 
     onLevelComplete(){
-        this.sound.play('Level_Complete');
+        this.sound.play('Level_Complete', {volume: 0.4 });
         console.log("Level Complete")
 		window.scores.push(this.score);
 		if(this.level >= this.totalLevels){

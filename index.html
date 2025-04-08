@@ -28,7 +28,6 @@
   <script src="./script/levels/Level3.js"></script>
   <script src="./script/levels/Level4.js"></script>
   <script src="./script/levels/Level5.js"></script>
-  <script src="./script/levels/BonusLevel.js"></script>
   <script src="./script/CongratulationsScene.js"></script>
   <script src="./script/scenes/gameOverScene.js"></script>
   <script src="./script/scenes/winScene.js"></script>
@@ -47,14 +46,14 @@
 
   <script>
     window.scores = []
-    window.fastText = true;
+    window.fastText = false;
     const config = {
       type: Phaser.AUTO,
       width: 800,
       height: 600,
       parent: 'game-container',
       scene: [
-        // WelcomeScene,
+        WelcomeScene,
         StartScene,
         // OfficeScene, - UNUSED
         // LevelIntro, - UNUSED
@@ -64,10 +63,10 @@
         Level3,
         Level4,
         Level5,
-        // BonusLevel,
-        // CongratulationsScene,
-        // ComputerScene,
-        // CISOScene,
+        // BonusLevel, - UNUSED
+        // CongratulationsScene, - UNUSED
+        // ComputerScene, - UNUSED
+        // CISOScene, - UNUSED
         GameOverScene,
         WinScene,
       ],
