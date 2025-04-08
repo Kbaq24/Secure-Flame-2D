@@ -12,16 +12,20 @@ class Level extends Scene
 			key: `Level${level}`
 		});
 		this.storyParts = storyParts;
-		this.score = 75;
-		this.fastText = true;
+		this.score = 0;
 		this.part = 0;
         this.level = level;
+		this.totalLevels = 5;
 	}
 
 	create(){
 		super.create();
+		this.score = Phaser.Math.Clamp((window.scores[this.level-2] ?? 75)+20,20,75);
 		this.createScoreBar();
 		this.triggerBAMFAlert();
+		console.log(window.scores)
+
+		
 	}
 	preload()
 	{
@@ -76,6 +80,7 @@ class Level extends Scene
 		return this.interpolateColor(this.score, 0xFF0000, 0xFFFF00, 0x00FF00);
 	}
 	setScoreBar(){
+		this.score = Phaser.Math.Clamp(this.score, 0, 100);
 		this.scoreBarFill.width = this.score / 100 * this.scoreBarBg.width;
 		this.scoreBarFill.setFillStyle(this.getScoreBarColor());
 		this.scoreBarText.setText(`${this.score}%`);
@@ -142,8 +147,17 @@ class Level extends Scene
 			optText.on('pointerdown', () =>
 			{
 				this.sound.play(option.correct ? 'Right' : 'Wrong');
-				this.showDialogue(this.storyParts, callback, option.feedback, this.part + 1)
+				
 				this.score += option.score * this.storyParts[this.part].multiplier;
+				if(this.score <= 0){
+					window.scores.push(0);
+					this.scene.start('GameOverScene');
+					this.scene.stop(this.scene.key);
+
+					return;
+				} else {
+					this.showDialogue(this.storyParts, callback, option.feedback, this.part + 1)
+				}
 				this.setScoreBar();
 			});
 
@@ -244,6 +258,12 @@ class Level extends Scene
     onLevelComplete(){
         this.sound.play('Level_Complete');
         console.log("Level Complete")
-        this.scene.start('Level'+(this.level+1));
+		window.scores.push(this.score);
+		if(this.level >= this.totalLevels){
+			this.scene.start('WinScene')
+		}else {
+			this.scene.start('Level'+(this.level+1));
+		}
+		this.scene.stop(this.scene.key);
     }
 }

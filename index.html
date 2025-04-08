@@ -30,6 +30,8 @@
   <script src="./script/levels/Level5.js"></script>
   <script src="./script/levels/BonusLevel.js"></script>
   <script src="./script/CongratulationsScene.js"></script>
+  <script src="./script/scenes/gameOverScene.js"></script>
+  <script src="./script/scenes/winScene.js"></script>
   <script src="./script/ComputerScene.js"></script>
   <script src="./script/CISOScene.js"></script>
 
@@ -44,6 +46,8 @@
   <noscript>Please enable JavaScript to play this game.</noscript>
 
   <script>
+    window.scores = []
+    window.fastText = true;
     const config = {
       type: Phaser.AUTO,
       width: 800,
@@ -51,7 +55,7 @@
       parent: 'game-container',
       scene: [
         // WelcomeScene,
-        // StartScene,
+        StartScene,
         // OfficeScene, - UNUSED
         // LevelIntro, - UNUSED
         // main, - UNUSED
@@ -63,7 +67,9 @@
         // BonusLevel,
         // CongratulationsScene,
         // ComputerScene,
-        // CISOScene
+        // CISOScene,
+        GameOverScene,
+        WinScene,
       ],
       physics: {
         default: 'arcade',

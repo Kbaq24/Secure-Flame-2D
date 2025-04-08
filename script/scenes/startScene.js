@@ -13,8 +13,12 @@ window.StartScene = class StartScene extends Scene {
   }
   create(){
     super.create();
+    window.scores = []
     this.showDialogue(this.messages, () => {
       this.scene.start('Level1');
     });
+    
+    this.bgMusic = this.sound.add('Background_music', { loop: true, volume: 0.05 });
+    this.bgMusic.play();
   }
 }

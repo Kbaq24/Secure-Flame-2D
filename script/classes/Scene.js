@@ -12,7 +12,7 @@ class Scene extends Phaser.Scene {
     currentlyTyping = false;
   
     // TODO: Make toggleable, or set to false for production
-    fastText = false;
+    fastText = window.fastText ?? false;
     preload() {
       this.load.audio('Background_music', 'assets/audio/music/Background_music.wav');
       this.load.audio('Click', 'assets/audio/sound_effects/Click.mp3');
@@ -49,8 +49,6 @@ class Scene extends Phaser.Scene {
       const background = this.add.sprite(centerX,centerY,"Office_Design_3").setOrigin(0.5)
         
       background.play("Office_Design_3_anim");
-      this.bgMusic = this.sound.add('Background_music', { loop: true, volume: 0.05 });
-      this.bgMusic.play();
   
       this.createDialogueUI();
   
