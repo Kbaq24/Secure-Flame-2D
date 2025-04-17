@@ -1,4 +1,4 @@
-class Scene extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
     /**
      * @param {object} config
      * @param {string[]} messages 
@@ -79,26 +79,10 @@ class Scene extends Phaser.Scene {
   
       let btnX = this.dialogueBackground.displayWidth - 80;
       let btnY = this.dialogueBackground.displayHeight - 30;
-      let padding = 20; 
-  
-      this.btnText = this.add.text(btnX, btnY, 'Continue', {
-          font: '18px Arial',
-          fill: '#00FF00'
-      }).setOrigin(0.5);
-      
-      this.continueBtn = this.add.image(btnX, btnY, 'Button')
-          .setOrigin(0.5)
-          .setDisplaySize(this.btnText.width + padding, this.btnText.height + padding);
-      this.btnText.setDepth(1)
-  
-      this.continueBtn.on('pointerover', () => {
-        this.continueBtn.setTint(0x00FF00);
-      });
-      this.continueBtn.on('pointerout', () => { 
-        this.continueBtn.clearTint();
-      })
-  
-      this.dialogueContainer = this.add.container(boxX, boxY, [this.dialogueBackground, this.continueBtn, this.btnText]);
+     
+      this.continueBtn = this.createMenuButton(btnX,btnY, 'Continue', null)
+
+      this.dialogueContainer = this.add.container(boxX, boxY, [this.dialogueBackground, this.continueBtn]);
   
       // let maskShape = this.make.graphics();
       // maskShape.fillRect(0, 0, boxWidth, boxHeight);
@@ -182,6 +166,72 @@ class Scene extends Phaser.Scene {
       };
       this.continueBtn.on('pointerdown', onContinueClick);
     }
+
+    /**
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     * @param {string} text 
+     * @param {function} callback 
+     * @returns 
+     */
+    createMenuButton(x, y, text, callback, width=null,  height=null) {
+      const button = this.add.container(x, y);
+      // Button background
+      const bg = this.add.image(0, 0, 'Button').setOrigin(0.5);
+      let padding = 20; 
+      // Button text
+      const buttonText = this.add.text(0, 0, text, {
+          font: '24px "Press Start 2P"',
+          color: '#000000'
+      }).setOrigin(0.5);
+      width = width ?? (buttonText.width + padding);
+      height = height ?? (buttonText.height + padding)
+      console.log(height)
+      button.add([bg, buttonText]);
+      bg.setDisplaySize(width, height);
+      button.setSize(width, height)
+      button.setInteractive();
+      // Hover effects
+      button.on('pointerover', () => {
+
+          bg.setTint(0x00FF00);
+          this.tweens.add({
+              targets: button,
+              scaleX: 1.05,
+              scaleY: 1.05,
+              duration: 100
+          });
+      });
+
+      button.on('pointerout', () => {
+          bg.clearTint();
+          this.tweens.add({
+              targets: button,
+              scaleX: 1,
+              scaleY: 1,
+              duration: 100
+          });
+      });
+
+      if(callback){
+        button.on('pointerdown', () => {
+          this.tweens.add({
+              targets: button,
+              scaleX: 0.95,
+              scaleY: 0.95,
+              duration: 50,
+              onComplete: () => {
+                  callback();
+                }
+            });
+        });
+      }
+
+   
+
+      return button;
+  }
 };
   
   

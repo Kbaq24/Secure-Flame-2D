@@ -1,4 +1,4 @@
-class Level extends Scene
+class Level extends GameScene
 {
 	/**
 	 * 
@@ -30,10 +30,10 @@ class Level extends Scene
 	preload()
 	{
 		super.preload();
-		this.load.audio('Right', 'assets/audio/sound_effects/Right.wav');
-		this.load.audio('Wrong', 'assets/audio/sound_effects/Wrong.wav');
-		this.load.audio('BAMF_Alert', 'assets/audio/sound_effects/BAMF_alert.wav');
-		this.load.audio('Level_Complete', 'assets/audio/sound_effects/Level_Complete.wav');
+		this.load.audio('Right', './assets/audio/sound_effects/Right.wav');
+		this.load.audio('Wrong', './assets/audio/sound_effects/Wrong.wav');
+		this.load.audio('BAMF_Alert', './assets/audio/sound_effects/BAMF_Alert.wav');
+		this.load.audio('Level_Complete', './assets/audio/sound_effects/Level_Complete.wav');
 	}
 	interpolateColor(num, low, medium, high) {
 		num = Phaser.Math.Clamp(num, 0, 100);

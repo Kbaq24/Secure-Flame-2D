@@ -1,4 +1,4 @@
-window.StartScene = class StartScene extends Scene {
+window.StartScene = class StartScene extends GameScene {
   constructor(){
     super({key: "StartScene"},
       [
