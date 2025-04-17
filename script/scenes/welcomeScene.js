@@ -17,14 +17,6 @@ window.WelcomeScene = class WelcomeScene extends Phaser.Scene {
             strokeThickness: 6
         }).setOrigin(0.5);
 
-        // Add shadow effect to title
-        const titleShadow = this.add.text(centerX + 4, 104, 'Secure\nFlame', {
-            font: '64px "Press Start 2P"',
-            color: '#000000',
-            align: 'center'
-        }).setOrigin(0.5).setAlpha(0.3);
-        titleShadow.setDepth(0);
-        title.setDepth(1);
 
         // Create flame icon
         const flameIcon = this.add.text(centerX - 150, 80, '🔥', {
@@ -81,7 +73,7 @@ window.WelcomeScene = class WelcomeScene extends Phaser.Scene {
 
         button.add([bg, buttonText]);
         button.setSize(300, 60);
-        button.setInteractive(new Phaser.Geom.Rectangle(-150, -30, 300, 60), Phaser.Geom.Rectangle.Contains);
+        button.setInteractive();
 
         // Hover effects
         button.on('pointerover', () => {
