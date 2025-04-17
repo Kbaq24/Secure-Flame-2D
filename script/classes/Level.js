@@ -106,7 +106,6 @@ class Level extends GameScene
 	{
 		this.removeBAMFOptions();
 		this.continueBtn.setVisible(false);
-		this.btnText.setVisible(false);
 		this.dialogueText.setText('');
 		this.optionButtons = [];
 		let options = this.storyParts[this.part].options;
@@ -172,26 +171,14 @@ class Level extends GameScene
 		let btnX = this.dialogueBackground.displayWidth - 80;
 		let btnY = this.dialogueBackground.displayHeight - 30;
 
-		let hintText = this.add.text(btnX, btnY, "Need a Hint?",
-		{
-			font: '18px Arial',
-			fill: '#FFD700'
-		}).setInteractive().setOrigin(0.5);
-
-		let hintButton = this.add.image(btnX, btnY, 'Button')
-			.setOrigin(0.5)
-			.setDisplaySize(hintText.width + 20, hintText.height + 20);
-
-		this.dialogueContainer.add(hintButton);
-		this.dialogueContainer.add(hintText);
-		hintText.on('pointerdown', () =>
-		{
-			// BUG: Hint button navigates to the next question after showing hint
+		const hintButton = this.createMenuButton(btnX, btnY, "Need a hint?", () => {
 			this.showDialogue(this.storyParts, callback, this.storyParts[this.part].hint, this.part);
 			this.sound.play('Click');
-		});
+		})
+
+		this.dialogueContainer.add(hintButton);
+		
 		this.optionButtons.push(hintButton);
-		this.optionButtons.push(hintText);
 	}
 	showDialogue(array, callback, feedback = null, index = 0)
 	{
@@ -203,7 +190,6 @@ class Level extends GameScene
 		}
 		this.removeBAMFOptions();
 		this.continueBtn.setVisible(true);
-		this.btnText.setVisible(true);
 
 		this.currentlyTyping = true;
 		this.dialogueText.setText('');
