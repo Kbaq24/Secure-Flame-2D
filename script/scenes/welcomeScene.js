@@ -5,30 +5,120 @@ window.WelcomeScene = class WelcomeScene extends Phaser.Scene {
 
     create() {
         const centerX = this.cameras.main.width / 2;
-        const centerY = this.cameras.main.height / 2;
-    
-        // Title Text
-        const text = this.add.text(centerX, centerY - 100, 'Secure Flame', {
-            fontSize: '32px',
-            fontFamily: 'Arial',
-            color: '#FFFFFF',
-            backgroundColor: '#000000',
-        }).setOrigin(0.5, 0.5); // Center text
-    
-        // Start Button
-        const startButton = this.add.text(centerX, centerY + 100, 'Start', {
-            fontSize: '32px',
-            fontFamily: 'Arial',
-            color: '#FFFFFF',
-            backgroundColor: '#555555',
-            padding: { x: 10, y: 5 } // Adds padding for better clickability
-        })
-        .setOrigin(0.5, 0.5) // Center button
-        .setInteractive();
-    
-        startButton.on('pointerdown', () => {
+        // Set background color
+        this.cameras.main.setBackgroundColor('#1a237e');
+
+        // Create title text with pixel effect
+        const title = this.add.text(centerX, 100, 'Secure\nFlame', {
+            font: '64px "Press Start 2P"',
+            color: '#ffffff',
+            align: 'center',
+            stroke: '#000000',
+            strokeThickness: 6
+        }).setOrigin(0.5);
+
+        // Add shadow effect to title
+        const titleShadow = this.add.text(centerX + 4, 104, 'Secure\nFlame', {
+            font: '64px "Press Start 2P"',
+            color: '#000000',
+            align: 'center'
+        }).setOrigin(0.5).setAlpha(0.3);
+        titleShadow.setDepth(0);
+        title.setDepth(1);
+
+        // Create flame icon
+        const flameIcon = this.add.text(centerX - 150, 80, '🔥', {
+            font: '48px Arial',
+            color: '#ff6b6b'
+        }).setOrigin(0.5);
+
+        // Add buttons
+        this.createMenuButton(centerX, 300, '▶ New Game', () => {
             this.scene.start('StartScene');
         });
+
+        this.createMenuButton(centerX, 380, '↓ Load Game', () => {
+            // Load game logic here
+            console.log('Load game clicked');
+            console.error("Unimplimented Action: 'Load Game'")
+        });
+
+        // Add version text
+        this.add.text(centerX, 550, 'Version 1.0.0', {
+            font: '16px "Press Start 2P"',
+            color: 'rgba(255, 255, 255, 0.5)'
+        }).setOrigin(0.5);
+
+        // Add subtle animation to the flame icon
+        this.tweens.add({
+            targets: flameIcon,
+            y: 90,
+            duration: 1500,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+        });
     }
-    
-}
+
+    /**
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     * @param {string} text 
+     * @param {function} callback 
+     * @returns 
+     */
+    createMenuButton(x, y, text, callback) {
+        const button = this.add.container(x, y);
+        // Button background
+        const bg = this.add.rectangle(0, 0, 300, 60, 0xffffff);
+        bg.setStrokeStyle(4, 0x000000);
+        // Button text
+        const buttonText = this.add.text(0, 0, text, {
+            font: '24px "Press Start 2P"',
+            color: '#000000'
+        }).setOrigin(0.5);
+
+        button.add([bg, buttonText]);
+        button.setSize(300, 60);
+        button.setInteractive(new Phaser.Geom.Rectangle(-150, -30, 300, 60), Phaser.Geom.Rectangle.Contains);
+
+        // Hover effects
+        button.on('pointerover', () => {
+            bg.setFillStyle(0xf0f0f0);
+            buttonText.setTint(0x0000ff);
+            this.tweens.add({
+            targets: button,
+            scaleX: 1.05,
+            scaleY: 1.05,
+            duration: 100
+            });
+        });
+
+        button.on('pointerout', () => {
+            bg.setFillStyle(0xffffff);
+            buttonText.clearTint();
+            this.tweens.add({
+            targets: button,
+            scaleX: 1,
+            scaleY: 1,
+            duration: 100
+            });
+        });
+
+        button.on('pointerdown', () => {
+            bg.setFillStyle(0xe0e0e0);
+            this.tweens.add({
+            targets: button,
+            scaleX: 0.95,
+            scaleY: 0.95,
+            duration: 50,
+            onComplete: () => {
+                callback();
+            }
+            });
+        });
+
+        return button;
+    }
+};
