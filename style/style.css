@@ -17,14 +17,13 @@ body {
 
 /* Game container styling */
 #game-container {
-  width: 800px;
-  height: 600px;
   margin: 0 auto;
-  position: relative;
-  border: 2px solid #fff; /* Optional: For debugging container bounds */
-  background-color: #000;
+  display: flex;
+  max-height: 100vh;
 }
-
+#game-container > canvas {
+  padding: 50px;
+}
 /* Fade transition effect for UI elements (e.g., dialogue box) */
 .fade-in {
   animation: fadeIn 0.3s ease-in-out forwards;
